@@ -5,4 +5,4 @@
 [Станислав Макаров](https://github.com/stas48)<br/>
 [Цапий Вадим](https://github.com/erfari)<br/>
 [Юлия Баришникова](1)<br/>
-[Белочка? ;)](1)<br/>
+[Белочка? ;)](https://github.com/belochkaaaaaaaaa)<br/>
