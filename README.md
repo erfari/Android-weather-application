@@ -1,2 +1,8 @@
-# -
-Android-application from technopark mail.ru course
+# Приложение прогноза погоды с персональными рекомендациями
+Разработки Android приложения технопарк mail.ru
+## Команда
+[Артем С](https://github.com/Artem231998)
+[Станислав Макаров](https://github.com/stas48)
+[Цапий Вадим](https://github.com/erfari)
+[Юлия Баришникова](1)
+[Белочка? ;)](1)
