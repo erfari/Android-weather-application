@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Weather for you</string>
+    <string name="network_and_push_text">Network and notification</string>
+    <string name="setting_geoposition">Geolocation</string>
+    <string name="setting_notification">Notification</string>
+    <string name="setting_update_content">Update content</string>
+    <string name="setting_mobile_data_transmission">Modile data transmission</string>
+    <string name="setting_theme">Night theme</string>
+    <string name="setting_language">Language</string>
+    <string name="device">Device</string>
+    <string name="humidity">Humidity</string>
+    <string name="visibility">Visibility</string>
+    <string name="wind_speed">Wind speed</string>
+    <string name="wind_direction">Wind direction</string>
+    <string name="precipitation">Precipitation</string>
+    <string name="pressure">Pressure</string>
+    <string name="sunrise">Sunrise</string>
+    <string name="sunset">Sunset</string>
+    <string name="hello_blank_fragment">Loading</string>
+</resources>

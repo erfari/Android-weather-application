@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:key="network_and_push"
+        app:title="@string/network_and_push_text"/>
+
+    <SwitchPreference
+        app:key="geolocation"
+        android:selectable="false"
+        app:title="@string/setting_geoposition"
+        app:icon="@drawable/ic_geoposition_24"
+        />
+
+    <SwitchPreference
+        app:key="push"
+        app:title="@string/setting_notification"
+        app:icon="@drawable/ic_notification_24"
+        />
+
+    <SwitchPreference
+        app:key="update_content"
+        android:selectable="false"
+        app:title="@string/setting_update_content"
+        app:icon="@drawable/ic_update_content_24"
+        />
+
+    <SwitchPreference
+        app:key="mobile_data_transmission"
+        android:selectable="false"
+        app:title="@string/setting_mobile_data_transmission"
+        app:icon="@drawable/ic_mobile_data_transmission"
+        />
+
+    <PreferenceCategory
+        android:key="device"
+        app:title="@string/device"/>
+
+    <SwitchPreference
+        app:key="enable_night_theme"
+        app:title="@string/setting_theme"
+        app:icon="@drawable/ic_theme_24"
+        />
+
+    <SwitchPreference
+        app:key="enable_en_language"
+        android:selectable="false"
+        app:title="@string/setting_language"
+        app:icon="@drawable/ic_language_24"
+        />
+
+</PreferenceScreen>
