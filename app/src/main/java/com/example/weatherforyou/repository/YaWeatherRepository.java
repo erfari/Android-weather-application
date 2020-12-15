@@ -25,15 +25,16 @@ public class YaWeatherRepository implements YaRepositoryCallback, WeatherService
 
     private MutableLiveData<ForecastResponse> responseMutableLiveData = new MutableLiveData();
 
-    public void start() {
 
-    }
+    private ForecastResponse weatherForPushY;
+
 
 
     @Override
     public void onSuccess(WeatherY weatherY) {
+        weatherForPushY = map(weatherY);
+
         weatherMutableLiveData.postValue(weatherY);
-        Log.i("MYLOG", weatherY.getCurrentY().getTemperature().toString() + " ya");
         responseMutableLiveData.postValue(map(weatherY));
     }
 
@@ -42,6 +43,15 @@ public class YaWeatherRepository implements YaRepositoryCallback, WeatherService
     public void onFailure() {
 
     }
+
+    public ForecastResponse getWeatherForPushY() {
+        return weatherForPushY;
+    }
+
+    public void setWeatherForPushY(ForecastResponse weatherForPushY) {
+        this.weatherForPushY = weatherForPushY;
+    }
+
 
     @Override
     public LiveData<ForecastResponse> getResponse() {
@@ -63,6 +73,11 @@ public class YaWeatherRepository implements YaRepositoryCallback, WeatherService
             @Override
             public String getSource() {
                 return "Yandex";
+            }
+
+            @Override
+            public Integer getTimeUpdate() {
+                return null;
             }
 
             @Override
@@ -88,6 +103,11 @@ public class YaWeatherRepository implements YaRepositoryCallback, WeatherService
             @Override
             public Integer getSunSet() {
                 return 0;
+            }
+
+            @Override
+            public Double getPrecipitation() {
+                return currentY.getPrecipitation();
             }
 
             @Override

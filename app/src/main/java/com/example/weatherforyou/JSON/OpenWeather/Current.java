@@ -52,6 +52,17 @@ public class Current {
     @SerializedName("rain")
     @Expose
     private Rain rain;
+    @SerializedName("snow")
+    @Expose
+    private Snow snow;
+
+    public Snow getSnow() {
+        return snow;
+    }
+
+    public void setSnow(Snow snow) {
+        this.snow = snow;
+    }
 
     public Rain getRain() {
         return rain;

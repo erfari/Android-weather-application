@@ -18,15 +18,20 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.weatherforyou.App;
 import com.example.weatherforyou.R;
 import com.example.weatherforyou.data.db.entities.WeatherEntity;
 import com.example.weatherforyou.databinding.FragmentWeatherBinding;
 import com.example.weatherforyou.mappers.WeatherModelMapper;
+import com.example.weatherforyou.model.drawableresource.DrawableResource;
+import com.example.weatherforyou.model.drawableresource.DrawableResourceFactory;
 import com.example.weatherforyou.model.weather.WeatherModel;
 import com.example.weatherforyou.ui.adapter.DailyWeatherAdapter;
 import com.example.weatherforyou.ui.adapter.HourWeatherAdapter;
 import com.example.weatherforyou.ui.adapter.WeatherInfoAdapter;
 import com.example.weatherforyou.viewmodel.WeatherViewModel;
+
+import javax.xml.datatype.DatatypeFactory;
 
 public class WeatherFragment extends Fragment {
 
@@ -47,6 +52,7 @@ public class WeatherFragment extends Fragment {
     private View favoriteCityButton;
 
     public static final String PAGE_NUMBER = "page number";
+
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -72,9 +78,6 @@ public class WeatherFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_weather, container, false);
-
-        FragmentWeatherBinding binding = FragmentWeatherBinding.inflate(inflater);
-
 
         return rootView;
     }
@@ -111,45 +114,56 @@ public class WeatherFragment extends Fragment {
             @Override
             public void onChanged(WeatherEntity weatherEntity) {
                 if (weatherEntity != null) {
+
                     weatherModel = new WeatherModelMapper(getContext()).toWeatherModel(weatherEntity);
+
                     adapterHour.setItems(weatherModel.getHourlyWeather());
+
                     adapterDaily.setItems(weatherModel.getDailyWeather());
+
                     adapterInfo.setItems(weatherModel.getWeatherInfoUI());
-                    String[] s = weatherModel.getDescription().split(",",2);
-                    currentDescription.setText(s[0]);
+
+                    String[] precipitationDescription = weatherModel.getDescription().split(",",2);
+
+                    String textDescription = precipitationDescription[0];
+
+                    String iconDescription = precipitationDescription[1];
+
+                    currentDescription.setText(textDescription);
+
                     currentTemperature.setText(weatherModel.getTemperature());
+
                     String url = "https://openweathermap.org/img/wn/" + weatherModel.getIconId() + "@2x.png";
-                    Glide.with(currentImage).load(url).into(currentImage);
-                    switch (s[1]) {
-                        case "Thunderstorm":
-                        case "Drizzle":
-                        case "Rain":
-                            Glide.with(backgroundImage).load(R.drawable.main_screen_rain).into(backgroundImage);
-                            break;
-                        case "Snow":
-                            Glide.with(backgroundImage).load(R.drawable.main_screen_snow).into(backgroundImage);
-                            break;
-                        case "Clear":
-                            Glide.with(backgroundImage).load(R.drawable.main_screen_sun).into(backgroundImage);
-                            break;
-                        case "Clouds":
-                            Glide.with(backgroundImage).load(R.drawable.main_screen_cloud).into(backgroundImage);
-                            break;
+
+                    Glide.with(currentImage)
+                            .load(url)
+                            .into(currentImage);
+
+
+                    DrawableResource drawableResource = new DrawableResourceFactory().getDrawable(iconDescription);
+                    if (drawableResource != null){
+                        Glide.with(backgroundImage)
+                                .load(drawableResource.getDrawable())
+                                .into(backgroundImage);
                     }
+
+
                 }
             }
         });
 
-//        settingFragment.setOnClickListener(view1 -> Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(R.id.));
         favoriteCityButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                requireActivity().setTheme(R.style.dark);
-                requireActivity().recreate();
                 Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(R.id.favoriteCityFragment);
             }
         });
 
+    }
+
+
+    private void bindHeader(){
+        
     }
 
 
@@ -158,7 +172,6 @@ public class WeatherFragment extends Fragment {
         Bundle bundle = getArguments();
         if (bundle != null) {
             position = bundle.getInt(PAGE_NUMBER);
-            
         }
 
         return position;

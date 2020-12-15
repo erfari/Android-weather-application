@@ -13,9 +13,6 @@ import com.example.weatherforyou.JSON.OpenWeather.Weather;
 import com.example.weatherforyou.data.db.WeatherDatabase;
 import com.example.weatherforyou.data.db.entities.WeatherEntity;
 import com.example.weatherforyou.data.network.OpenWeatherController;
-import com.example.weatherforyou.data.network.WeatherBitController;
-import com.example.weatherforyou.data.network.YandexWeatherControler;
-import com.example.weatherforyou.mappers.DatabaseMapper;
 import com.example.weatherforyou.model.city.City;
 import com.example.weatherforyou.model.weatherapi.DailyResponse;
 import com.example.weatherforyou.model.weatherapi.ForecastResponse;
@@ -29,6 +26,8 @@ public class OpenWeatherRepository implements RepositoryCallback, WeatherService
 
 
     private MutableLiveData<ForecastResponse> responseMutableLiveData = new MutableLiveData();
+
+    private ForecastResponse weatherforPush;
 
 
     WeatherDatabase database = App.AppInstance.getInstance().getDatabase();
@@ -50,7 +49,7 @@ public class OpenWeatherRepository implements RepositoryCallback, WeatherService
     public void onSuccess(Weather weather) {
         Log.e("f", "работает?");
         //database.getWeatherDao().insert(new DatabaseMapper(city).toDatabaseModel(weather));
-
+        weatherforPush = map(weather);
         responseMutableLiveData.postValue(map(weather));
 
     }
@@ -65,6 +64,13 @@ public class OpenWeatherRepository implements RepositoryCallback, WeatherService
         return responseMutableLiveData;
     }
 
+    public ForecastResponse getWeatherforPush() {
+        return weatherforPush;
+    }
+
+    public void setWeatherforPush(ForecastResponse weatherforPush) {
+        this.weatherforPush = weatherforPush;
+    }
 
     public ForecastResponse map(Weather weather) {
 
@@ -74,6 +80,11 @@ public class OpenWeatherRepository implements RepositoryCallback, WeatherService
             @Override
             public String getSource() {
                 return "openWeather";
+            }
+
+            @Override
+            public Integer getTimeUpdate() {
+                return current.getDt();
             }
 
             @Override
@@ -102,6 +113,21 @@ public class OpenWeatherRepository implements RepositoryCallback, WeatherService
             }
 
             @Override
+            public Double getPrecipitation() {
+//                if (current.getRain() != null) {
+//                    return (int) current.getRain().get1h().doubleValue();
+//                } else if (current.getSnow() != null) {
+//                    return (int) current.getSnow().get1h().doubleValue();
+//                } else {
+//                    return 0;
+//                }
+                if (current.getRain() != null) {
+                    return current.getRain().get1h();
+                }
+                return 0.0;
+            }
+
+            @Override
             public Integer getPressure() {
                 return current.getPressure();
             }
@@ -118,7 +144,7 @@ public class OpenWeatherRepository implements RepositoryCallback, WeatherService
 
             @Override
             public Double getWindDeg() {
-                return current.getWindSpeed();
+                return current.getWindDeg().doubleValue();
             }
 
             @Override
@@ -167,7 +193,7 @@ public class OpenWeatherRepository implements RepositoryCallback, WeatherService
 
                 ArrayList<HourlyResponse> hourlyResponses = new ArrayList<>();
 
-                for (Hourly hourly : weather.getHourly()){
+                for (Hourly hourly : weather.getHourly()) {
                     HourlyResponse response = new HourlyResponse() {
                         @Override
                         public int getCity() {

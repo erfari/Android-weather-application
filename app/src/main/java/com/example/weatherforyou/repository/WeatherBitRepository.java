@@ -1,14 +1,8 @@
 package com.example.weatherforyou.repository;
 
-import android.util.Log;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.weatherforyou.JSON.OpenWeather.Current;
-import com.example.weatherforyou.JSON.OpenWeather.Daily;
-import com.example.weatherforyou.JSON.OpenWeather.Hourly;
-import com.example.weatherforyou.JSON.OpenWeather.Weather;
 import com.example.weatherforyou.JSON.WeatherBit.CurrentB;
 import com.example.weatherforyou.JSON.WeatherBit.DailyB;
 import com.example.weatherforyou.JSON.WeatherBit.HourlyB;
@@ -29,13 +23,12 @@ public class WeatherBitRepository implements WBRepositoryCallback, WeatherServic
 
     private MutableLiveData<ForecastResponse> responseMutableLiveData = new MutableLiveData();
 
-    public void start() {
-        new WeatherBitController().start(this, 25.15802,55.3008027);
-    }
+    private ForecastResponse weatherForPushB;
 
 
     @Override
     public void onSuccess(WeatherB weatherB) {
+        weatherForPushB = map(weatherB);
         weatherMutableLiveData.postValue(weatherB);
         responseMutableLiveData.postValue(map(weatherB));
     }
@@ -44,6 +37,14 @@ public class WeatherBitRepository implements WBRepositoryCallback, WeatherServic
     @Override
     public void onFailure() {
 
+    }
+
+    public ForecastResponse getWeatherForPushB() {
+        return weatherForPushB;
+    }
+
+    public void setWeatherForPushB(ForecastResponse weatherForPushB) {
+        this.weatherForPushB = weatherForPushB;
     }
 
 
@@ -73,6 +74,11 @@ public class WeatherBitRepository implements WBRepositoryCallback, WeatherServic
             }
 
             @Override
+            public Integer getTimeUpdate() {
+                return null;
+            }
+
+            @Override
             public String getIconId() {
                 return null;
             }
@@ -95,6 +101,21 @@ public class WeatherBitRepository implements WBRepositoryCallback, WeatherServic
             @Override
             public Integer getSunSet() {
                 return 0;
+            }
+
+            @Override
+            public Double getPrecipitation() {
+                if (current.getPrecipitation() != null && current.getPrecipitationSnow() != null){
+                    if (current.getPrecipitation() != 0){
+                        return current.getPrecipitation();
+                    } else if (current.getPrecipitationSnow() != 0) {
+                        return current.getPrecipitationSnow();
+                    } else {
+                        return 0.0;
+                    }
+                }
+                return 0.0;
+
             }
 
             @Override

@@ -1,21 +1,20 @@
 package com.example.weatherforyou.repository;
 
-import android.Manifest;
-import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.location.Address;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
+import androidx.annotation.RequiresApi;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.room.Database;
+import androidx.lifecycle.Observer;
 
 import com.example.weatherforyou.App;
 import com.example.weatherforyou.data.db.WeatherDatabase;
@@ -24,15 +23,20 @@ import com.example.weatherforyou.model.city.City;
 import com.example.weatherforyou.model.city.CityImpl;
 import com.example.weatherforyou.model.city.FavoriteCity;
 import com.example.weatherforyou.model.city.FavoriteCityImpl;
-import com.example.weatherforyou.ui.MainActivity;
 import com.example.weatherforyou.utils.CityFinderByCoordinates;
-import com.facebook.stetho.common.ArrayListAccumulator;
+import com.example.weatherforyou.viewmodel.PermissionViewModel;
 import com.google.android.libraries.places.api.model.Place;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
-public class CityRepository implements LocationListener {
+public class CityRepository{
 
 
     private WeatherDatabase database = App.AppInstance.getInstance().getDatabase();
@@ -40,8 +44,6 @@ public class CityRepository implements LocationListener {
     private Context context;
 
     private MutableLiveData<Integer> cityCount = new MutableLiveData<>();
-
-    LocationManager locationManager;
 
     public CityRepository(Context context) {
         this.context = context;
@@ -51,21 +53,16 @@ public class CityRepository implements LocationListener {
         return cityCount;
     }
 
-    @SuppressLint("MissingPermission")
-    public int calculateCityCount(LocationManager locationManager, Context context) {
-        this.locationManager = locationManager;
+
+    public void calculateCityCount() {
         int size = database.getCityDao().getAll().size();
-        if (size == 0) {
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+        Log.e("calculate", Integer.toString(size));
+        cityCount.setValue(size);
 
-        }else {
-            cityCount.setValue(size);
-        }
-
-        return 0;
     }
 
     public City getCityBy(int id){
+
         CityEntity entity = database.getCityDao().getAll().get(id);
 
         return new CityImpl(entity.name, entity.lat, entity.lon);
@@ -77,7 +74,13 @@ public class CityRepository implements LocationListener {
     }
 
     public void saveCity(Place place){
-        database.getCityDao().insert(new CityEntity(place.getName(), place.getLatLng().latitude, place.getLatLng().longitude, 0));
+        database.getCityDao().insert(new CityEntity(place.getName(), place.getLatLng().latitude, place.getLatLng().longitude, Calendar.getInstance().getTimeInMillis()));
+    }
+
+
+    public void saveCity(String cityName, Location location){
+
+        database.getCityDao().insert(new CityEntity(cityName,location.getLatitude(), location.getLongitude(),  Calendar.getInstance().getTimeInMillis()));
     }
 
     public List<FavoriteCity> getFavoriteCities() {
@@ -85,34 +88,18 @@ public class CityRepository implements LocationListener {
         ArrayList<FavoriteCity> favoriteCities = new ArrayList<>();
 
         List<CityEntity> response = database.getCityDao().getAll();
+
+
+        DateFormat dateFormat = new SimpleDateFormat("HH:mm");
+
         for(CityEntity entity: response){
-            favoriteCities.add(new FavoriteCityImpl(entity.name, "15:44", "17", Color.parseColor("#FFFFFF")));
+            Date date = new Date(entity.lastUpdate);
+            Log.e("time", date.toString());
+            favoriteCities.add(new FavoriteCityImpl(entity.name, dateFormat.format(date), "17", Color.parseColor("#66707070"), entity.lat, entity.lon));
         }
 
         return favoriteCities;
     }
 
-    @Override
-    public void onLocationChanged(@NonNull Location location) {
-        String name = CityFinderByCoordinates.getCityName(context, location.getLatitude(), location.getLongitude());
-        database.getCityDao().insert(new CityEntity(name, location.getLatitude(),location.getLongitude(), 0));
-        cityCount.postValue(database.getCityDao().getAll().size());
-        locationManager.removeUpdates(this);
 
-    }
-
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-
-    }
-
-    @Override
-    public void onProviderEnabled(@NonNull String provider) {
-
-    }
-
-    @Override
-    public void onProviderDisabled(@NonNull String provider) {
-
-    }
 }

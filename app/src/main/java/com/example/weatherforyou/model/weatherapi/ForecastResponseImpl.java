@@ -6,6 +6,8 @@ public class ForecastResponseImpl implements ForecastResponse {
 
     private String description;
 
+    private Integer timeUpdate;
+
     private String iconId;
 
     private Double temp;
@@ -13,6 +15,8 @@ public class ForecastResponseImpl implements ForecastResponse {
     private Integer sunRise;
 
     private Integer sunSet;
+
+    private Double precipitation;
 
     private Integer pressure;
 
@@ -24,19 +28,21 @@ public class ForecastResponseImpl implements ForecastResponse {
 
     private Integer visibility;
 
-    private List<DailyResponse> dailyResponses;
+    private List<? extends DailyResponse> dailyResponses;
 
-    private List<HourlyResponse> hourlyResponses;
+    private List<? extends HourlyResponse> hourlyResponses;
 
     private String source;
 
 
-    public ForecastResponseImpl(String description, String iconId, Double temp, Integer sunRise, Integer sunSet, Integer pressure, Integer humidity, Double windSpeed, Double windDeg, Integer visibility, List<DailyResponse> dailyResponses, List<HourlyResponse> hourlyResponses, String source) {
+    public ForecastResponseImpl(Integer timeUpdate, String description, String iconId, Double temp, Integer sunRise, Integer sunSet, Double precipitation, Integer pressure, Integer humidity, Double windSpeed, Double windDeg, Integer visibility, List<DailyResponse> dailyResponses, List<HourlyResponse> hourlyResponses, String source) {
+        this.timeUpdate = timeUpdate;
         this.description = description;
         this.iconId = iconId;
         this.temp = temp;
         this.sunRise = sunRise;
         this.sunSet = sunSet;
+        this.precipitation = precipitation;
         this.pressure = pressure;
         this.humidity = humidity;
         this.windSpeed = windSpeed;
@@ -47,12 +53,16 @@ public class ForecastResponseImpl implements ForecastResponse {
         this.source = source;
     }
 
-    public ForecastResponseImpl(String description, String iconId, Double temp, Integer sunRise, Integer sunSet, Integer pressure, Integer humidity, Double windSpeed, Double windDeg, Integer visibility, List<DailyResponse> dailyResponses, List<HourlyResponse> hourlyResponses) {
+
+
+    public ForecastResponseImpl(Integer timeUpdate, String description, String iconId, Double temp, Integer sunRise, Integer sunSet, Double precipitation, Integer pressure, Integer humidity, Double windSpeed, Double windDeg, Integer visibility, List<DailyResponse> dailyResponses, List<HourlyResponse> hourlyResponses) {
+        this.timeUpdate = timeUpdate;
         this.description = description;
         this.iconId = iconId;
         this.temp = temp;
         this.sunRise = sunRise;
         this.sunSet = sunSet;
+        this.precipitation = precipitation;
         this.pressure = pressure;
         this.humidity = humidity;
         this.windSpeed = windSpeed;
@@ -62,12 +72,20 @@ public class ForecastResponseImpl implements ForecastResponse {
         this.hourlyResponses = hourlyResponses;
     }
 
-    public void setDailyResponses(List<DailyResponse> dailyResponses) {
+    public void setTimeUpdate(Integer timeUpdate) {
+        this.timeUpdate = timeUpdate;
+    }
+
+    public void setDailyResponses(List<? extends DailyResponse> dailyResponses) {
         this.dailyResponses = dailyResponses;
     }
 
-    public void setHourlyResponses(List<HourlyResponse> hourlyResponses) {
+    public void setHourlyResponses(List<? extends HourlyResponse> hourlyResponses) {
         this.hourlyResponses = hourlyResponses;
+    }
+
+    public void setPrecipitation(Double precipitation) {
+        this.precipitation = precipitation;
     }
 
     public void setTemp(Double temp) {
@@ -108,6 +126,11 @@ public class ForecastResponseImpl implements ForecastResponse {
     }
 
     @Override
+    public Integer getTimeUpdate() {
+        return timeUpdate;
+    }
+
+    @Override
     public String getIconId() {
         return iconId;
     }
@@ -130,6 +153,11 @@ public class ForecastResponseImpl implements ForecastResponse {
     @Override
     public Integer getSunSet() {
         return sunSet;
+    }
+
+    @Override
+    public Double getPrecipitation() {
+        return precipitation;
     }
 
     @Override
@@ -158,12 +186,12 @@ public class ForecastResponseImpl implements ForecastResponse {
     }
 
     @Override
-    public List<DailyResponse> getDailyResponse() {
+    public List<? extends DailyResponse> getDailyResponse() {
         return dailyResponses;
     }
 
     @Override
-    public List<HourlyResponse> getHourlyResponse() {
+    public List<? extends HourlyResponse> getHourlyResponse() {
         return hourlyResponses;
     }
 

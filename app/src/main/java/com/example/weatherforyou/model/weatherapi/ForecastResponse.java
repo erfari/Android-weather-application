@@ -1,18 +1,12 @@
 package com.example.weatherforyou.model.weatherapi;
 
-import androidx.room.PrimaryKey;
-
-import com.example.weatherforyou.data.db.entities.DailyEntity;
-import com.example.weatherforyou.data.db.entities.HourlyEntity;
-import com.example.weatherforyou.data.db.entities.InfoEntity;
-
-import org.jetbrains.annotations.NotNull;
-
 import java.util.List;
 
 public interface ForecastResponse {
 
     String getSource();
+
+    Integer getTimeUpdate();
 
     String getIconId();
 
@@ -24,6 +18,8 @@ public interface ForecastResponse {
 
     Integer getSunSet();
 
+    Double getPrecipitation();
+
     Integer getPressure();
 
     Integer getHumidity();
@@ -34,7 +30,7 @@ public interface ForecastResponse {
 
     Integer getVisibility();
 
-    List<DailyResponse> getDailyResponse();
+    List<? extends DailyResponse> getDailyResponse();
 
-    List<HourlyResponse> getHourlyResponse();
+    List<? extends HourlyResponse> getHourlyResponse();
 }

@@ -25,10 +25,9 @@ public class WeatherViewModel extends ViewModel {
 
     WeatherBitRepository weatherBitRepository = new WeatherBitRepository();
 
-    private OpenWeatherRepository repository = new OpenWeatherRepository();
+    OpenWeatherRepository repository = new OpenWeatherRepository();
 
     private CityRepository cityRepository;
-
 
     private WeatherApi weatherApi = new WeatherApi();
 
@@ -36,13 +35,12 @@ public class WeatherViewModel extends ViewModel {
 
 
     private LiveData<WeatherEntity> weather = new MutableLiveData<>();
+
     City city;
 
     public void init(Context context) {
 
-        //  weatherBitRepository.start();
 
-        //  yaWeatherRepository.start();
 
 
         cityRepository = new CityRepository(context);
@@ -54,7 +52,7 @@ public class WeatherViewModel extends ViewModel {
         weatherApi.getForResponse().observeForever(new Observer<ForecastResponse>() {
             @Override
             public void onChanged(ForecastResponse response) {
-                Log.e("dsf", weatherApi.map(response).toString());
+
                 App.AppInstance.getInstance().getDatabase().getWeatherDao().insert(weatherApi.mapToDatabaseModel(response));
             }
         });
@@ -65,7 +63,6 @@ public class WeatherViewModel extends ViewModel {
         city = cityRepository.getCityBy(cityId);
 
         weather = repository.getWeatherFromDatabase(city.getName());
-
 
         weatherApi.updateCurrentWeather(city);
 

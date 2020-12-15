@@ -13,6 +13,9 @@ public class CurrentB {
     @SerializedName("precip")
     @Expose
     private Double precipitation;
+    @SerializedName("snow")
+    @Expose
+    private Double precipitationSnow;
     @SerializedName("wind_spd")
     @Expose
     private Double windSpeed;
@@ -25,6 +28,14 @@ public class CurrentB {
     @SerializedName("rh")
     @Expose
     private Double humidity;
+
+    public Double getPrecipitationSnow() {
+        return precipitationSnow;
+    }
+
+    public void setPrecipitationSnow(Double precipitationSnow) {
+        this.precipitationSnow = precipitationSnow;
+    }
 
     public Integer getDt() {
         return dt;

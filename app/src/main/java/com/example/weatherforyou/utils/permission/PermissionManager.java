@@ -36,7 +36,7 @@ public class PermissionManager {
         }
     }
 
-    private boolean isPermissionGranted() {
+    public boolean isPermissionGranted() {
         boolean isPermissionGranted = ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
         Log.e("permission", " is permission already granted: " + isPermissionGranted);
         return isPermissionGranted;

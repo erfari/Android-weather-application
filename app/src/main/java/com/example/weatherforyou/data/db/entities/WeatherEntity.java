@@ -48,6 +48,8 @@ public class WeatherEntity {
         this.hourlyWeather = hourlyWeather;
     }
 
+
+
     public Double getLat() {
         return lat;
     }

@@ -23,6 +23,8 @@ import com.facebook.stetho.Stetho;
 
 import javax.inject.Inject;
 
+
+//стартовая activity
 public class MainActivity extends AppCompatActivity {
 
     @Inject
@@ -33,7 +35,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         setDefaultNightMode();
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -41,14 +42,16 @@ public class MainActivity extends AppCompatActivity {
 
         Stetho.initializeWithDefaults(this);
 
-        permissionManager.startGetPermission();
-
     }
 
     private void inject(){
-        App.AppInstance.getInstance().getApplicationComponent().plus(new MainActivityModule(this)).inject(this);
+        App.AppInstance.getInstance().getMainActivityComponent(this).inject(this);
+        App.AppInstance.getInstance().getForecastComponent();
     }
 
+
+
+    //переключение темы приложения(с темной на светлую и наоборот)
     private void setDefaultNightMode() {
 
         getPreferences(MODE_PRIVATE);
@@ -63,14 +66,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
-    public PermissionManager getPermissionManager() {
-        return permissionManager;
-    }
-
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
         permissionManager.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 }

@@ -82,7 +82,6 @@ public class WeatherBitController {
                     if (x == 3) {
                         weatherB = new WeatherB(weatherBCurrentList, weatherBHourlyList, weatherBDailyList);
                         wbRepositoryCallback.onSuccess(weatherB);
-                        Log.i("MYLOG", weatherB.getWeatherBCurrentList().getCurrentB().get(0).getDt().toString());
                     }
                 }
             }
@@ -101,7 +100,7 @@ public class WeatherBitController {
                 if (x == 3) {
                     weatherB = new WeatherB(weatherBCurrentList, weatherBHourlyList, weatherBDailyList);
                     wbRepositoryCallback.onSuccess(weatherB);
-                    Log.i("MYLOG", weatherB.getWeatherBCurrentList().getCurrentB().get(0).getDt().toString());
+
 
                 }
             }
@@ -119,7 +118,6 @@ public class WeatherBitController {
                 if (x == 3) {
                     weatherB = new WeatherB(weatherBCurrentList, weatherBHourlyList, weatherBDailyList);
                     wbRepositoryCallback.onSuccess(weatherB);
-                    Log.i("MYLOG", weatherB.getWeatherBCurrentList().getCurrentB().get(0).getDt().toString());
 
                 }
             }

@@ -71,6 +71,7 @@ public class WeatherModelMapper {
                 context.getResources().getString(R.string.sunset),
         };
 
+
         weatherInfoUIModels.add(new WeatherInfoUiModelImpl(weatherParameters[0], weatherEntity.getInfoEntity().getHumidity()));
         weatherInfoUIModels.add(new WeatherInfoUiModelImpl(weatherParameters[1], weatherEntity.getInfoEntity().getVisibility()));
         weatherInfoUIModels.add(new WeatherInfoUiModelImpl(weatherParameters[2], weatherEntity.getInfoEntity().getWindSpeed()));

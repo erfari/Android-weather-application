@@ -13,6 +13,7 @@ import java.util.Locale;
 public class CityFinderByCoordinates {
 
 
+
     public static String getCityName(Context context, double lat, double lon){
         List<Address> addresses = null;
         Geocoder geocoder = new Geocoder(context, Locale.getDefault());
