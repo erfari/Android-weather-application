@@ -16,10 +16,10 @@ public class CityEntity {
 
     public double lon;
 
-    public long lastUpdate;
+    public int lastUpdate;
 
 
-    public CityEntity(@NotNull String name, Double lat, Double lon, long lastUpdate) {
+    public CityEntity(@NotNull String name, Double lat, Double lon, int lastUpdate) {
         this.name = name;
         this.lat = lat;
         this.lon = lon;

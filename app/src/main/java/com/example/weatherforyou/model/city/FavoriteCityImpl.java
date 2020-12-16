@@ -12,10 +12,6 @@ public class FavoriteCityImpl implements FavoriteCity {
 
     String temp;
 
-    Double lat;
-
-    Double lon;
-
 
     int color;
 
@@ -25,13 +21,11 @@ public class FavoriteCityImpl implements FavoriteCity {
         this.temp = temp;
     }
 
-    public FavoriteCityImpl(String name, String someTime, String temp, int color, Double lat, Double lon) {
+    public FavoriteCityImpl(String name, String someTime, String temp, int color) {
         this.name = name;
         this.someTime = someTime;
         this.temp = temp;
         this.color = color;
-        this.lat = lat;
-        this.lon = lon;
     }
 
     @Override
@@ -47,16 +41,6 @@ public class FavoriteCityImpl implements FavoriteCity {
     @Override
     public String getTemp() {
         return temp;
-    }
-
-    @Override
-    public Double getLat() {
-        return lat;
-    }
-
-    @Override
-    public Double getLon() {
-        return lon;
     }
 
     @Override

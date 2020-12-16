@@ -31,10 +31,4 @@ public interface CityDao {
     @Delete
     public void delete(CityEntity city);
 
-    @Query("DELETE FROM city")
-    public void clearTable();
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    public void insertAll(List<CityEntity> cityList);
-
 }

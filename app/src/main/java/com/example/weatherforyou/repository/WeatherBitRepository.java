@@ -105,17 +105,13 @@ public class WeatherBitRepository implements WBRepositoryCallback, WeatherServic
 
             @Override
             public Double getPrecipitation() {
-                if (current.getPrecipitation() != null && current.getPrecipitationSnow() != null){
-                    if (current.getPrecipitation() != 0){
-                        return current.getPrecipitation();
-                    } else if (current.getPrecipitationSnow() != 0) {
-                        return current.getPrecipitationSnow();
-                    } else {
-                        return 0.0;
-                    }
+                if (current.getPrecipitation() != 0){
+                    return current.getPrecipitation();
+                } else if (current.getPrecipitationSnow() != 0) {
+                    return current.getPrecipitationSnow();
+                } else {
+                    return 0.0;
                 }
-                return 0.0;
-
             }
 
             @Override

@@ -10,10 +10,6 @@ public interface FavoriteCity {
 
     String getTemp();
 
-    Double getLat();
-
-    Double getLon();
-
 
     int backColor();
 }

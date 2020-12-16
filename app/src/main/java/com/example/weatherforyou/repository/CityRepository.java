@@ -5,13 +5,11 @@ import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
@@ -27,13 +25,7 @@ import com.example.weatherforyou.utils.CityFinderByCoordinates;
 import com.example.weatherforyou.viewmodel.PermissionViewModel;
 import com.google.android.libraries.places.api.model.Place;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 public class CityRepository{
@@ -74,13 +66,11 @@ public class CityRepository{
     }
 
     public void saveCity(Place place){
-        database.getCityDao().insert(new CityEntity(place.getName(), place.getLatLng().latitude, place.getLatLng().longitude, Calendar.getInstance().getTimeInMillis()));
+        database.getCityDao().insert(new CityEntity(place.getName(), place.getLatLng().latitude, place.getLatLng().longitude, 0));
     }
 
-
     public void saveCity(String cityName, Location location){
-
-        database.getCityDao().insert(new CityEntity(cityName,location.getLatitude(), location.getLongitude(),  Calendar.getInstance().getTimeInMillis()));
+        database.getCityDao().insert(new CityEntity(cityName,location.getLatitude(), location.getLongitude(), 0));
     }
 
     public List<FavoriteCity> getFavoriteCities() {
@@ -88,14 +78,8 @@ public class CityRepository{
         ArrayList<FavoriteCity> favoriteCities = new ArrayList<>();
 
         List<CityEntity> response = database.getCityDao().getAll();
-
-
-        DateFormat dateFormat = new SimpleDateFormat("HH:mm");
-
         for(CityEntity entity: response){
-            Date date = new Date(entity.lastUpdate);
-            Log.e("time", date.toString());
-            favoriteCities.add(new FavoriteCityImpl(entity.name, dateFormat.format(date), "17", Color.parseColor("#66707070"), entity.lat, entity.lon));
+            favoriteCities.add(new FavoriteCityImpl(entity.name, "15:44", "17", Color.parseColor("#66707070")));
         }
 
         return favoriteCities;

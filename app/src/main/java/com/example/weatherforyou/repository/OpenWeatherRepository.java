@@ -144,7 +144,7 @@ public class OpenWeatherRepository implements RepositoryCallback, WeatherService
 
             @Override
             public Double getWindDeg() {
-                return current.getWindDeg().doubleValue();
+                return current.getWindSpeed();
             }
 
             @Override
