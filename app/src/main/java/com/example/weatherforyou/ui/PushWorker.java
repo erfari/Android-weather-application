@@ -62,7 +62,7 @@ public class PushWorker extends Worker {
         //---
 
 
-        WeatherEntity currentCity2 = App.AppInstance.getInstance().getDatabase().getWeatherDao().getCurrentCity();
+        WeatherEntity currentCity2 = App.AppInstance.getInstance().getDatabase().getWeatherDao().getCurrentCity().getValue();
 
         Log.i("MYLOG", currentCity2.getLastUpdateTime() + " 11 ");
 
@@ -103,7 +103,7 @@ public class PushWorker extends Worker {
         weatherApi.addService(weatherBitRepository);
         weatherApi.addService(yaWeatherRepository);
 
-        WeatherEntity currentCity = App.AppInstance.getInstance().getDatabase().getWeatherDao().getCurrentCity();
+        WeatherEntity currentCity = App.AppInstance.getInstance().getDatabase().getWeatherDao().getCurrentCity().getValue();
 
         Log.i("MYLOG", String.valueOf(currentCity.getLastUpdateTime()));
 

@@ -24,7 +24,7 @@
         android:name="com.example.weatherforyou.ui.fragment.SettingFragment"
         android:label="fragment_setting"
         tools:layout="@layout/fragment_setting" />
-        tools:layout="@layout/weather_fragment"/>
+    tools:layout="@layout/weather_fragment"/>
     <fragment
         android:id="@+id/favoriteCityFragment"
         android:name="com.example.weatherforyou.ui.fragment.FavoriteCityFragment"

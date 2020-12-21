@@ -12,6 +12,7 @@ import androidx.work.PeriodicWorkRequest;
 
 import com.example.weatherforyou.data.db.WeatherDatabase;
 import com.example.weatherforyou.di.component.ApplicationComponent;
+
 import com.example.weatherforyou.di.component.DaggerApplicationComponent;
 import com.example.weatherforyou.di.component.ForecastComponent;
 import com.example.weatherforyou.di.component.MainActivityComponent;
@@ -55,7 +56,8 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
 
-        database = Room.databaseBuilder(getApplicationContext(), WeatherDatabase.class, "weatherdatabase").allowMainThreadQueries().build();
+        //database = Room.databaseBuilder(getApplicationContext(), WeatherDatabase.class, "weatherdatabase").allowMainThreadQueries().build();
+        database = Room.databaseBuilder(getApplicationContext(), WeatherDatabase.class, "weatherdatabase").build();
 
 
         //инициализация dagger 2

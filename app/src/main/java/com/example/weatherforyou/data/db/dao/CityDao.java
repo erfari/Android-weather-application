@@ -15,12 +15,15 @@ import com.example.weatherforyou.model.city.City;
 
 import java.util.List;
 
+import io.reactivex.Completable;
+import io.reactivex.Observable;
+import io.reactivex.Single;
+
 @Dao
 public interface CityDao {
 
     @Query("SELECT * FROM city")
-    public List<CityEntity> getAll();
-
+    List<CityEntity>  getAll();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     public void insert(CityEntity city);
@@ -30,5 +33,11 @@ public interface CityDao {
 
     @Delete
     public void delete(CityEntity city);
+
+    @Query("DELETE FROM city")
+    public void clearTable();
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    public void insertAll(List<CityEntity> cityList);
 
 }

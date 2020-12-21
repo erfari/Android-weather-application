@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.weatherforyou.App;
 import com.example.weatherforyou.R;
 import com.example.weatherforyou.data.db.entities.WeatherEntity;
 import com.example.weatherforyou.databinding.FragmentWeatherBinding;
@@ -51,6 +52,7 @@ public class WeatherFragment extends Fragment {
     private View favoriteCityButton;
 
     public static final String PAGE_NUMBER = "page number";
+
 
     @Override
     public void onAttach(@NonNull Context context) {

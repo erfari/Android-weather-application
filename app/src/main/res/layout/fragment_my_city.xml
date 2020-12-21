@@ -38,4 +38,35 @@
 
         app:srcCompat="@drawable/ic_add_24" />
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/choice_path_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/add_new_city"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <Button
+            android:id="@+id/choice_place"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Мое местоположение"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/choice_city"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Найти город"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/choice_place"
+            app:layout_constraintVertical_bias="0.0" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

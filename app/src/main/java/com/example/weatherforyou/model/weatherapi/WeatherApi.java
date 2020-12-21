@@ -203,6 +203,7 @@ public class WeatherApi {
                 result.setSunRise(forecastResponse.getSunRise());
                 result.setHumidity(forecastResponse.getHumidity());
                 result.setSunSet(forecastResponse.getSunSet());
+                result.setWindDeg(forecastResponse.getWindDeg());
 
                 for (int i = 0; i < 7; i++) {
                     dailyResult.get(i).addInfo(forecastResponse.getDailyResponse().get(i));
@@ -217,7 +218,6 @@ public class WeatherApi {
             result.setTemp(forecastResponse.getTemp() + result.getTemp());
             result.setPressure(forecastResponse.getPressure() + result.getPressure());
             result.setWindSpeed(forecastResponse.getWindSpeed() + result.getWindSpeed());
-            result.setWindDeg(forecastResponse.getWindDeg() + result.getWindDeg());
             result.setVisibility(forecastResponse.getVisibility() + result.getVisibility());
             result.setPrecipitation(forecastResponse.getPrecipitation() + result.getPrecipitation());
 
@@ -235,7 +235,6 @@ public class WeatherApi {
         result.setPressure(result.getPressure() / forecastResponses.size());
         result.setHumidity(result.getHumidity() / forecastResponses.size());
         result.setWindSpeed(result.getWindSpeed() / forecastResponses.size());
-        result.setWindDeg(result.getWindDeg() / forecastResponses.size());
         result.setVisibility(result.getVisibility() / forecastResponses.size());
         result.setPrecipitation(result.getPrecipitation() / forecastResponses.size());
 

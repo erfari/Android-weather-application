@@ -25,6 +25,7 @@
     <string name="choice_city">выбрать город</string>
     <string name="welcome_in">Добро пожаловать в</string>
     <string name="gps_enable">GPS не включен, включить службу определения местоположения</string>
+    <string name="widget_ok">Готово</string>
 
     <string-array name="pushArray">
         <item>Отключить</item>
@@ -43,6 +44,9 @@
         <item>360</item>
         <item>720</item>
     </string-array>
+
+
+
 
 
 </resources>

@@ -1,34 +1,43 @@
 package com.example.weatherforyou.ui.adapter;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.weatherforyou.App;
 import com.example.weatherforyou.R;
+import com.example.weatherforyou.data.db.entities.CityEntity;
+import com.example.weatherforyou.data.db.entities.DailyEntity;
+import com.example.weatherforyou.data.db.entities.HourlyEntity;
+import com.example.weatherforyou.data.db.entities.InfoEntity;
+import com.example.weatherforyou.data.db.entities.WeatherEntity;
 import com.example.weatherforyou.databinding.ItemCityInfoBinding;
-import com.example.weatherforyou.databinding.ItemDailyWeatherBinding;
-import com.example.weatherforyou.model.city.CityImpl;
 import com.example.weatherforyou.model.city.FavoriteCity;
-import com.example.weatherforyou.model.weather.DailyWeather;
+import com.example.weatherforyou.model.city.FavoriteCityImpl;
 import com.example.weatherforyou.repository.CityRepository;
 import com.example.weatherforyou.ui.adapter.listeners.ItemClickListener;
+import com.example.weatherforyou.ui.adapter.listeners.ItemTouchHelperAdapter;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
-public class FavoriteCityAdapter extends RecyclerView.Adapter<FavoriteCityAdapter.FavoriteCityViewHolder> {
+import io.reactivex.Completable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Action;
+import io.reactivex.schedulers.Schedulers;
+
+public class FavoriteCityAdapter extends RecyclerView.Adapter<FavoriteCityAdapter.FavoriteCityViewHolder> implements ItemTouchHelperAdapter {
 
     private List<FavoriteCity> items = new ArrayList<>();
 
@@ -71,6 +80,58 @@ public class FavoriteCityAdapter extends RecyclerView.Adapter<FavoriteCityAdapte
         return items.size();
     }
 
+    @Override
+    public boolean onItemMove(int fromPosition, int toPosition) {
+        if (fromPosition < toPosition) {
+            for (int i = fromPosition; i < toPosition; i++) {
+                Collections.swap(items, i, i + 1);
+            }
+        } else {
+            for (int i = fromPosition; i > toPosition; i--) {
+                Collections.swap(items, i, i - 1);
+            }
+        }
+        notifyItemMoved(fromPosition, toPosition);
+        Log.i("MYLOG", fromPosition + " " + toPosition);
+        Completable.fromAction(new Action() {
+            @Override
+            public void run() throws Exception {
+                App.AppInstance.getInstance().getDatabase().getCityDao().clearTable();
+            }
+        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe();
+
+
+        List<CityEntity> cityEntities = new ArrayList<>();
+        for (FavoriteCity city : items) {
+            cityEntities.add(new CityEntity(city.getCityName(), city.getLat(), city.getLon(), 123));
+        }
+        Completable.fromAction(new Action() {
+            @Override
+            public void run() throws Exception {
+                App.AppInstance.getInstance().getDatabase().getCityDao().insertAll(cityEntities);
+            }
+        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe();
+        return true;
+    }
+
+    @Override
+    public void onItemDismiss(int position) {
+        FavoriteCity favoriteCity = items.get(position);
+        Completable.fromAction(new Action() {
+            @Override
+            public void run() throws Exception {
+                App.AppInstance.getInstance().getDatabase().getCityDao()
+                        .delete(new CityEntity(favoriteCity.getCityName(), favoriteCity.getLat(), favoriteCity.getLon(), 123));
+                App.AppInstance.getInstance().getDatabase().getWeatherDao()
+                        .delete(new WeatherEntity(0.0, 0.0, favoriteCity.getCityName(), "", 0.0, 0, "", new InfoEntity("","","","","","",0,0), new ArrayList<DailyEntity>(), new ArrayList<HourlyEntity>()));
+
+            }
+        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe();
+
+        items.remove(position);
+        notifyItemRemoved(position);
+    }
+
     class FavoriteCityViewHolder extends RecyclerView.ViewHolder {
 
         ItemCityInfoBinding weatherBinding;
@@ -81,22 +142,13 @@ public class FavoriteCityAdapter extends RecyclerView.Adapter<FavoriteCityAdapte
 
         }
 
-        public void bind(FavoriteCity favoriteCity , Context context, ItemClickListener<FavoriteCity> cityItemClickListener) {
+        public void bind(FavoriteCity favoriteCity, Context context, ItemClickListener<FavoriteCity> cityItemClickListener) {
 
             weatherBinding.setFavoritecity(favoriteCity);
 
-            ConstraintLayout constraintLayout =  itemView.findViewById(R.id.city_container);
+            ConstraintLayout constraintLayout = itemView.findViewById(R.id.city_container);
 
-            constraintLayout.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View view) {
-
-                    cityItemClickListener.onClick(favoriteCity);
-                    return false;
-                }
-            });
             constraintLayout.setBackground(new ColorDrawable(favoriteCity.backColor()));
-
 
 
         }

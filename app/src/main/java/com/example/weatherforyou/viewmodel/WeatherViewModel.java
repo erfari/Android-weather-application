@@ -18,6 +18,11 @@ import com.example.weatherforyou.repository.OpenWeatherRepository;
 import com.example.weatherforyou.repository.WeatherBitRepository;
 import com.example.weatherforyou.repository.YaWeatherRepository;
 
+import io.reactivex.Completable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Action;
+import io.reactivex.schedulers.Schedulers;
+
 
 public class WeatherViewModel extends ViewModel {
 
@@ -40,6 +45,7 @@ public class WeatherViewModel extends ViewModel {
 
     public void init(Context context) {
 
+
         cityRepository = new CityRepository(context);
 
         weatherApi.addService(repository);
@@ -49,9 +55,16 @@ public class WeatherViewModel extends ViewModel {
         weatherApi.getForResponse().observeForever(new Observer<ForecastResponse>() {
             @Override
             public void onChanged(ForecastResponse response) {
+                Completable.fromAction(new Action() {
+                    @Override
+                    public void run() throws Exception {
+                        App.AppInstance.getInstance().getDatabase().getWeatherDao().insert(weatherApi.mapToDatabaseModel(response));
+                    }
+                }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe();
 
-                App.AppInstance.getInstance().getDatabase().getWeatherDao().insert(weatherApi.mapToDatabaseModel(response));
+                // data updated
             }
+            // App.AppInstance.getInstance().getDatabase().getWeatherDao().insert(weatherApi.mapToDatabaseModel(response));
         });
     }
 

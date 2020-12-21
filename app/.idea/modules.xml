@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/2130780586/Weather_for_you.iml" filepath="$PROJECT_DIR$/.idea/modules/2130780586/Weather_for_you.iml" group="Weather_for_you" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app.iml" filepath="$PROJECT_DIR$/.idea/modules/app.iml" group="Weather for you/app" />
+    </modules>
+  </component>
+</project>
