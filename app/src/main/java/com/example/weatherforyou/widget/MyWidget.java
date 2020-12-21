@@ -95,8 +95,6 @@ public class MyWidget extends AppWidgetProvider {
                 String url = "https://openweathermap.org/img/wn/" + weather.get(0).getIconIdWithUrl() + "@2x.png";
                 Log.d("INFO", "city name" + "   " + minTem + "     " + maxTem + "      " + "     " + url);
                 updateViews(minTem, maxTem, url, widgetView, context, appWidgetManager, id);
-
-
             }
         };
 
